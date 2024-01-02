@@ -1,9 +1,9 @@
 import axios from 'axios';
 import config from "../config";
 
-
 const apiEndpoint = config.apiEndpoint;
 
+axios.defaults.withCredentials = true
 
 async function getAllProfile() {
     const url = config.apiEndpoint + `/profile`;
@@ -56,10 +56,36 @@ async function submitTask(taskData) {
 
 }
 
+async function loginService(values) {
+    const url = config.apiEndpoint + '/auth/login';
+
+    try {
+        const response = await axios.post(url, values);
+        return response;
+    } catch (error) {
+        console.error(error.message, error.response?.data);
+        return false;
+    }
+}
+
+async function submitRegister(values) {
+    const url = config.apiEndpoint + '/auth/register';
+
+    try {
+        const response = await axios.post(url, values);
+        return response;
+    } catch (error) {
+        console.error(error.message, error.response?.data);
+        return false;
+    }
+}
+
 export default {
     getAllProfile,
     postResume,
     getAllService,
     getAllTask,
     submitTask,
+    loginService,
+    submitRegister,
 };

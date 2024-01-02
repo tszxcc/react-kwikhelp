@@ -16,6 +16,8 @@ import vacuumPhoto from "../../assets/images/homepage-vacuum.svg";
 import imageUrl from "../../assets/images/categoryphoto.png";
 import homeBubble from "../../assets/images/homepage-bg-bubble.svg";
 
+import "../../styles/media.css";
+
 import { useNavigate } from "react-router-dom";
 
 import apiService from "../../services/apiService";
@@ -25,15 +27,33 @@ export default function Homepage() {
   const navigateTo = useNavigate();
   const [services, setServices] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const filteredData = services.filter((item) =>
-    item.serviceName.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-  const categoryImages = {
-    "House Chores" : [
-      {imageUrl: ""}
-    ]
-  }
+  const filteredData = services
+    .map((obj) => {
+      return {
+        ...obj,
+      };
+    })
+    .filter((item) =>
+      item.serviceName.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
+  // const serviceImages = {
+  //   "House Chores": {
+  //     FurnitureAssembly: "../../assets/images/moving.jpg",
+  //     Laundry: "/path/to/laundry_image.jpg",
+  //     Gardening: "/path/to/gardening_image.jpg",
+  //   },
+  //   "Professional Help": {
+  //     Tutoring: "/path/to/tutoring_image.jpg",
+  //     Handyman: "/path/to/handyman_image.jpg",
+  //     "IT Support": "/path/to/it_support_image.jpg",
+  //   },
+  //   "Writing and Translation": {
+  //     Editing: "/path/to/editing_image.jpg",
+  //     Proofreading: "/path/to/proofreading_image.jpg",
+  //     Translation: "/path/to/translation_image.jpg",
+  //   },
+  // };
 
   async function getAllService() {
     const response = await apiService.getAllService();
@@ -58,7 +78,6 @@ export default function Homepage() {
     getAllService();
   }, []);
 
-
   return (
     <>
       <div
@@ -67,7 +86,7 @@ export default function Homepage() {
       >
         <div className="relative flex items-center py-3 px-12 justify-center">
           <div className="w-[75%] pr-[5%]">
-            <div className="text-6xl mb-6">
+            <div className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
               <h1>Effortless Convenience At Your Fingertips.</h1>
             </div>
             <div>
@@ -78,13 +97,17 @@ export default function Homepage() {
               </p>
             </div>
             <div>
-              <Searchbar searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
-             
+              <Searchbar
+                searchTerm={searchTerm}
+                setSearchTerm={setSearchTerm}
+              />
             </div>
-
           </div>
           <div className="flex justify-center items-center">
-            <img src={vacuumPhoto} className="max-w-[80%]"></img>
+            <img
+              src={vacuumPhoto}
+              className="hidden md:block max-w-[80%]"
+            ></img>
           </div>
         </div>
       </div>
@@ -93,7 +116,6 @@ export default function Homepage() {
         style={{ "--landingBubble": `url(${homeBubble})` }}
         className="bg-[image:var(--landingBubble)] bg-cover bg-center p-12"
       >
-              
         <div className="font-semibold text-xl text-[#22313F]">Explore</div>
         <div className="font-medium text-3xl text-[#44558F]">House Chores</div>
         <div>
@@ -101,8 +123,14 @@ export default function Homepage() {
             modules={[Navigation, Pagination, A11y]}
             spaceBetween={50}
             slidesPerView={3}
-            // onSlideChange={}
-            // onSwiper={}
+            breakpoints={{
+              640: {
+                slidesPerView: 3,
+              },
+              320: {
+                slidesPerView: 1,
+              },
+            }}
             className="!p-4 !flex flex-col-reverse"
           >
             <SwiperNavButton />
@@ -112,7 +140,7 @@ export default function Homepage() {
                   <SwiperSlide key={i}>
                     <Cardcategory
                       title={obj.serviceName}
-                      imageUrl={obj?.imageUrl}
+                      imageUrl={serviceImages[obj.category][obj.serviceName]}
                       body={obj.serviceDesc}
                       onClick={() => navigateTo("/createtask")}
                     />
@@ -131,8 +159,14 @@ export default function Homepage() {
             modules={[Navigation, Pagination, A11y]}
             spaceBetween={50}
             slidesPerView={3}
-            // onSlideChange={}
-            // onSwiper={}
+            breakpoints={{
+              640: {
+                slidesPerView: 3,
+              },
+              320: {
+                slidesPerView: 1,
+              },
+            }}
             className="!p-4 !flex flex-col-reverse"
           >
             <SwiperNavButton />
@@ -161,8 +195,14 @@ export default function Homepage() {
             modules={[Navigation, Pagination, A11y]}
             spaceBetween={50}
             slidesPerView={3}
-            // onSlideChange={}
-            // onSwiper={}
+            breakpoints={{
+              640: {
+                slidesPerView: 3,
+              },
+              320: {
+                slidesPerView: 1,
+              },
+            }}
             className="!p-4 !flex flex-col-reverse mb-16"
           >
             <SwiperNavButton />

@@ -7,6 +7,8 @@ import PendingContent from "../../components/taskhistory/pendingcontent";
 import CompletedContent from "../../components/taskhistory/completedcontent";
 import Calendar from "../../components/calendar";
 
+import homeBubble from "../../assets/images/homepage-bg-bubble.svg";
+
 export default function Taskhistory() {
   const [activeItem, setActiveItem] = useState("Task Request");
 
@@ -16,27 +18,32 @@ export default function Taskhistory() {
 
   return (
     <>
-      <div className="w-[85%] self center">
-        <Cardbackground>
-          {/* nav */}
+      <div
+        style={{ "--landingBubble": `url(${homeBubble})` }}
+        className="bg-[image:var(--landingBubble)] bg-cover bg-center h-screen"
+      >
+        <div className="w-full self center">
+          <Cardbackground>
+            {/* nav */}
 
-          <Taskhistorymenu
-            onItemClick={handleMenuItemClick}
-            activeItem={activeItem}
-          />
+            <Taskhistorymenu
+              onItemClick={handleMenuItemClick}
+              activeItem={activeItem}
+            />
 
-          {/* task history */}
-          {activeItem === "Task Request" && <TaskRequestContent />}
+            {/* task history */}
+            {activeItem === "Task Request" && <TaskRequestContent />}
 
-          {/* pending */}
-          {activeItem === "Pending" && <PendingContent />}
+            {/* pending */}
+            {activeItem === "Pending" && <PendingContent />}
 
-          {/* completed */}
-          {activeItem === "Completed" && <CompletedContent />}
+            {/* completed */}
+            {activeItem === "Completed" && <CompletedContent />}
 
-          {/* <Calendar /> */}
-          {/* <Textfield readOnly={true} /> */}
-        </Cardbackground>
+            {/* <Calendar /> */}
+            {/* <Textfield readOnly={true} /> */}
+          </Cardbackground>
+        </div>
       </div>
     </>
   );

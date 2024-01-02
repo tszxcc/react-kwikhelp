@@ -1,5 +1,6 @@
 import React from "react";
 import imageUrl from "../assets/images/logo.png";
+import categoryImages from "../pages/Homepage/cardImages";
 
 export default function cardcategory({ title, imageUrl, body, onClick }) {
   return (

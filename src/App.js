@@ -16,15 +16,7 @@ import SearchTask from "./pages/SearchTask";
 import Resume from "./pages/Signup/resume.jsx";
 
 function App() {
-  const options = [
-    { value: "jack", label: "Jack" },
-    { value: "rose", label: "Rose" },
-    { value: "titanic", label: "Titanic" },
-  ];
 
-  const handleChange = (selectedOption) => {
-    console.log("handleChange", selectedOption);
-  };
   return (
     <>
       <Router>

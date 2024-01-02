@@ -1,5 +1,4 @@
 import React from "react";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faXmark,
@@ -7,7 +6,6 @@ import {
   faEnvelope,
   faPhone,
 } from "@fortawesome/free-solid-svg-icons";
-
 import sampleImage from "../assets/images/sampleImage.jpg";
 import backgroundImage from "../assets/images/resumebackground.svg";
 import Button from "./button";
@@ -19,11 +17,11 @@ export default function Resumemodalbox(props) {
     <>
       {isOpen && (
         <div
-          className="flex justify-center items-center fixed top-0 left-0 w-full bg-black bg-opacity-70 h-screen z-50"
+          className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-70 z-50 flex justify-center items-center"
           onClick={() => setIsOpen(false)}
         >
           <div
-            className="relative bg-white border-solid border-4 border-[#CFF2F6] rounded-xl w-1/5 overflow-hidden"
+            className="relative bg-white border-solid border-4 border-[#CFF2F6] rounded-xl w-80 md:w-96 overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Background Image Overlay */}
@@ -43,13 +41,12 @@ export default function Resumemodalbox(props) {
               </button>
             </div>
 
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center p-4">
               <img
                 src={sampleImage}
                 alt="Profile Pic"
                 className="w-24 h-24 rounded-full object-cover cursor-pointer z-10"
-              ></img>
-
+              />
               <div className="flex items-center gap-4 mt-4">
                 <div className="text-center">
                   <div>Bryan Jun</div>
@@ -61,9 +58,7 @@ export default function Resumemodalbox(props) {
                   className="text-[#44558F] cursor-pointer"
                 />
               </div>
-
               <div className="my-4">A plumber with asdjaklsjdlkads....</div>
-
               <div className="my-4 z-10">
                 <div className="flex items-center gap-4 cursor-pointer">
                   <div className="flex justify-center items-center rounded-full bg-[#44558F] w-8 h-8">
@@ -71,7 +66,6 @@ export default function Resumemodalbox(props) {
                   </div>
                   <div>bryanc12@gmail.com</div>
                 </div>
-
                 <div className="my-2">
                   <div className="flex items-center gap-4 cursor-pointer">
                     <div className="flex justify-center items-center rounded-full bg-[#44558F] w-8 h-8">
@@ -81,7 +75,6 @@ export default function Resumemodalbox(props) {
                   </div>
                 </div>
               </div>
-
               <Button
                 buttonType="back"
                 buttonText="Back"

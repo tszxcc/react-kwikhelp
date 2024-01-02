@@ -4,10 +4,9 @@ import Cardbackground from "../../components/cardbackground";
 import Button from "../../components/button";
 
 import axios from "axios";
-
+import homeBubble from "../../assets/images/homepage-bg-bubble.svg";
 import resumelogo from "../../assets/images/resumelogo.svg";
 import { useNavigate } from "react-router-dom";
-import { upload } from "@testing-library/user-event/dist/upload";
 
 export default function Resume() {
   const [file, setFile] = useState(null);
@@ -30,7 +29,7 @@ export default function Resume() {
     });
 
     axios
-      .post("http://localhost:5000/api/resume", fd, {
+      .post("http://server3.bryanc12.net:25789/api/resume", fd, {
         onUploadProgress: (progressEvent) => {
           setProgress((prevState) => {
             return {
@@ -55,43 +54,53 @@ export default function Resume() {
   }
 
   return (
-    <div className="w-[70%] self-center">
-      <Cardbackground>
-        <div className="flex justify-between gap-20">
-          <div className="p-8 flex-1 text-center">
-            <div className="text-4xl font-bold mb-4">Almost There!</div>
-            <div className="mb-8">Submit Your Resume in PDF format</div>
+    <div
+      style={{ "--landingBubble": `url(${homeBubble})` }}
+      className="bg-[image:var(--landingBubble)] bg-cover bg-center h-screen"
+    >
+      <div className="w-full md:w-[50%] mx-auto">
+        <Cardbackground>
+          {/* Updated the structure to improve responsiveness */}
+          <div className="flex flex-col md:flex-row gap-6 p-8 text-center md:text-left">
+            <div className="flex-1">
+              <div className="text-4xl font-bold mb-4">Almost There!</div>
+              <div className="mb-8">Submit Your Resume in PDF format</div>
 
-            <div className="border-dashed border-2 border-gray-300 p-8 text-center mb-8">
-              <div className="mb-8">Drop Your File Here</div>
-              <div className="flex justify-center items-center">
-                <input
-                  className="mb-4"
-                  onChange={(e) => {
-                    setFile(e.target.files[0]);
-                  }}
-                  type="file"
-                />
+              <div className="border-dashed border-2 border-gray-300 p-8 text-center mb-8">
+                <div className="mb-8">Drop Your File Here</div>
+                <div className="flex justify-center items-center">
+                  <input
+                    onChange={(e) => {
+                      if (e.target.files.length > 0) {
+                        setFile(e.target.files[0]);
+                      } else {
+                        setFile(null); // Handle case where no file is selected or selection is cancelled
+                      }
+                    }}
+                    type="file"
+                  />
+                </div>
               </div>
+              <Button onClick={handleUpload} buttonText="Upload"></Button>
+              {progress.started && (
+                <progress max="100" value={progress.pc}></progress>
+              )}
+              {msg && <div className="mb-4">{msg}</div>}
+              {uploadSuccess && (
+                <Button
+                  buttonText="Continue"
+                  onClick={() => navigateTo("/profile")}
+                />
+              )}
             </div>
-            <Button onClick={handleUpload} buttonText="Upload"></Button>
-            {progress.started && (
-              <progress max="100" value={progress.pc}></progress>
-            )}
-            {msg && <div className="mb-4">{msg}</div>}
-            {uploadSuccess && (
-              <Button
-                buttonText="Continue"
-                onClick={() => navigateTo("/profile")}
-              />
-            )}
-          </div>
 
-          <div className="p-8 flex-1">
-            <img src={resumelogo} alt="resumeLogo" />
+            <div className="hidden md:flex md:flex-1 md:justify-end">
+              {/* Hide the resume logo on small screens */}
+              <img src={resumelogo} alt="resumeLogo" />
+            </div>
           </div>
-        </div>
-      </Cardbackground>
+        </Cardbackground>
+      </div>
     </div>
   );
 }

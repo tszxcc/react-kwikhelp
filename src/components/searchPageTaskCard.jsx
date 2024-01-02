@@ -16,7 +16,7 @@ export default function SearchPageTaskCard({
   onClick,
   selectedJob,
 }) {
-  const cardClass = `flex flex-col items-center justify-center border-solid border-2 rounded-lg px-8 h-1/2 my-8 shadow-md transition-colors duration-300 ${
+  const cardClass = `bg-white flex flex-col items-center justify-center border-solid border-2 rounded-lg px-8 h-1/2 my-8 shadow-md transition-colors duration-300 ${
     selectedJob ? "border-[#7EA6F4]" : "border-[#BDBDBD]"
   } hover:border-[#7EA6F4]`;
 
@@ -25,7 +25,7 @@ export default function SearchPageTaskCard({
       <div className={cardClass}>
         <div className="flex items-center justify-center p-2">
           <FontAwesomeIcon icon={faBriefcase} className="mr-2" />
-          <div className="text-3xl">{title}</div>
+          <div className="text-2xl md:text-3xl">{title}</div>
         </div>
         <div className="grid grid-cols-2 grid-rows-2 gap-6 p-4">
           <div className="flex items-center">
