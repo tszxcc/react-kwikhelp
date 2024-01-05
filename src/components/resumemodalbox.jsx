@@ -10,7 +10,7 @@ import sampleImage from "../assets/images/sampleImage.jpg";
 import backgroundImage from "../assets/images/resumebackground.svg";
 import Button from "./button";
 
-export default function Resumemodalbox(props) {
+export default function ResumeModalbox(props) {
   const { isOpen, setIsOpen } = props;
 
   return (

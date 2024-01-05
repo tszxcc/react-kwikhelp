@@ -3,12 +3,18 @@ import logoImage from "../assets/images/logo.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 
+import apiService from "../services/apiService";
+
 export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
 
   const navOnClick = (nav) => {
     if (nav === "home") {
       window.location.href = "/";
+    }
+
+    if (nav === "helpertaskhistory") {
+      window.location.href = "/helpertaskhistory";
     }
 
     if (nav === "taskHistory") {
@@ -19,8 +25,16 @@ export function Navbar() {
       window.location.href = "/profile";
     }
 
+    if (nav === "login") {
+      window.location.href = "/login";
+    }
+
     if (nav === "signUp") {
-      window.location.href = "/sign-up";
+      window.location.href = "/signup";
+    }
+
+    if (nav === "logout") {
+      apiService.logout();
     }
   };
 
@@ -43,30 +57,65 @@ export function Navbar() {
         >
           Home
         </div>
-        <div
-          className="hover:cursor-pointer duration-150 hover:mb-2 hover:border-b-[1.5px] border-[#7EA6F4]"
-          onClick={() => {
-            navOnClick("taskHistory");
-          }}
-        >
-          Task History
-        </div>
-        <div
-          className="hover:cursor-pointer duration-150 hover:mb-2 hover:border-b-[1.5px] border-[#7EA6F4]"
-          onClick={() => {
-            navOnClick("profile");
-          }}
-        >
-          Profile
-        </div>
-        <div
-          className="hover:cursor-pointer duration-150 hover:mb-2 hover:border-b-[1.5px] border-[#7EA6F4]"
-          onClick={() => {
-            navOnClick("signUp");
-          }}
-        >
-          Sign Up
-        </div>
+        {localStorage.getItem("role") === "user" && (
+          <div
+            className="hover:cursor-pointer duration-150 hover:mb-2 hover:border-b-[1.5px] border-[#7EA6F4]"
+            onClick={() => {
+              navOnClick("taskHistory");
+            }}
+          >
+            Task History
+          </div>
+        )}
+        {localStorage.getItem("role") === "helper" && (
+          <div
+            className="hover:cursor-pointer duration-150 hover:mb-2 hover:border-b-[1.5px] border-[#7EA6F4]"
+            onClick={() => {
+              navOnClick("helpertaskhistory");
+            }}
+          >
+            Task History
+          </div>
+        )}
+        {localStorage.getItem("role") ? (
+          <>
+            <div
+              className="hover:cursor-pointer duration-150 hover:mb-2 hover:border-b-[1.5px] border-[#7EA6F4]"
+              onClick={() => {
+                navOnClick("profile");
+              }}
+            >
+              Profile
+            </div>
+            <div
+              className="hover:cursor-pointer duration-150 hover:mb-2 hover:border-b-[1.5px] border-[#7EA6F4]"
+              onClick={() => {
+                navOnClick("logout");
+              }}
+            >
+              Logout
+            </div>
+          </>
+        ) : (
+          <>
+            <div
+              className="hover:cursor-pointer duration-150 hover:mb-2 hover:border-b-[1.5px] border-[#7EA6F4]"
+              onClick={() => {
+                navOnClick("login");
+              }}
+            >
+              Login
+            </div>
+            <div
+              className="hover:cursor-pointer duration-150 hover:mb-2 hover:border-b-[1.5px] border-[#7EA6F4]"
+              onClick={() => {
+                navOnClick("signUp");
+              }}
+            >
+              Sign Up
+            </div>
+          </>
+        )}
       </div>
 
       {/* Mobile Menu */}

@@ -35,7 +35,7 @@ export default function CreateTask() {
       }
 
       //when success
-      navigateTo("/task");
+      navigateTo("/taskhistory");
     } catch (error) {
       console.log(error);
     }
@@ -43,10 +43,11 @@ export default function CreateTask() {
 
   const { handleSubmit, handleChange, values, touched, errors } = useFormik({
     initialValues: {
+      serviceType: "",
       taskDescription: "",
       taskArea: "",
       thingsToBring: "",
-      nickname: "",
+      username: "",
       additionalInfo: "",
       taskDate: "",
       startTime: "",
@@ -72,13 +73,23 @@ export default function CreateTask() {
           {step === 1 && (
             <div className="flex flex-col md:flex-row justify-center my-5 mx-3 gap-6">
               <div className="w-full md:w-1/2">
-                <select>
+                {/* <select>
                   {serviceOptions.map((option) => (
                     <option value={option.value} key={option.value}>
                       {option.label}
                     </option>
                   ))}
-                </select>
+                </select> */}
+
+                <Textfield
+                  id="serviceType"
+                  name="serviceType"
+                  label="Service Type*"
+                  value={values.serviceType}
+                  onChange={handleChange}
+                  touched={touched}
+                  error={errors}
+                />
 
                 <Textfield
                   id="taskDescription"
@@ -111,10 +122,10 @@ export default function CreateTask() {
 
               <div className="w-full md:w-1/2">
                 <Textfield
-                  id="nickname"
-                  name="nickname"
+                  id="username"
+                  name="username"
                   label="Name*"
-                  value={values.nickname}
+                  value={values.username}
                   onChange={handleChange}
                   touched={touched}
                   error={errors}
@@ -137,7 +148,7 @@ export default function CreateTask() {
                 <Textfield
                   id="taskDate"
                   name="taskDate"
-                  label="Date*"
+                  label="Date* (MM/DD/YYYY)"
                   value={values.taskDate}
                   onChange={handleChange}
                   touched={touched}
@@ -160,7 +171,7 @@ export default function CreateTask() {
                 <Textfield
                   id="startTime"
                   name="startTime"
-                  label="From time*"
+                  label="From time* (11:00 AM)"
                   value={values.startTime}
                   onChange={handleChange}
                   touched={touched}
@@ -169,7 +180,7 @@ export default function CreateTask() {
                 <Textfield
                   id="endTime"
                   name="endTime"
-                  label="To time*"
+                  label="To time* (12:00 PM)"
                   value={values.endTime}
                   onChange={handleChange}
                   touched={touched}
@@ -193,11 +204,11 @@ export default function CreateTask() {
                   </div>
 
                   <div className="p-4">
-                    <div className="mb-4">Type: {}</div>
+                    <div className="mb-4">Type: {values.serviceType}</div>
                     <div className="mb-4">
                       Optional Details: {values.taskDescription}
                     </div>
-                    <div className="mb-4">Name: {values.nickname}</div>
+                    <div className="mb-4">Name: {values.username}</div>
                     <div className="mb-4">
                       Additional Info: {values.additionalInfo}
                     </div>

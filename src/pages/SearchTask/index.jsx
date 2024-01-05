@@ -1,19 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import SearchPageTaskCard from "../../components/searchPageTaskCard";
 import Searchbar from "../../components/searchbar";
 import Button from "../../components/button";
 import Select from "../../components/select";
 
-import { useEffect } from "react";
+import Modalbox from "../../components/modalbox";
 import apiService from "../../services/apiService";
-
 import homeBubble from "../../assets/images/homepage-bg-bubble.svg";
 
 export default function Searchtask() {
   const [selectedJob, setSelectedJob] = useState(0);
   const [jobLists, setJobLists] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [applyOpen, setApplyOpen] = useState(false);
+
+  const handleApply = () => {
+    setApplyOpen(true);
+  };
 
   //  // Function to format date in Malaysia time
   //   const formatDateInMalaysiaTime = (dateTimeString) => {
@@ -142,7 +146,23 @@ export default function Searchtask() {
                       </div>
 
                       <div>
-                        <Button buttonText="Apply" />
+                        {applyOpen && (
+                          <div>
+                            <Modalbox
+                              isOpen={applyOpen}
+                              setIsOpen={setApplyOpen}
+                            >
+                              <div className="text-center w-96">
+                                <div className="mb-10 mt-4">
+                                  Applied Successfully!
+                                </div>
+                              </div>
+                            </Modalbox>
+                          </div>
+                        )}
+                      </div>
+                      <div>
+                        <Button buttonText="Apply" onClick={handleApply} />
                       </div>
                     </div>
                   </div>

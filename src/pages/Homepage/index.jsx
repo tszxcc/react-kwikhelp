@@ -37,28 +37,24 @@ export default function Homepage() {
       item.serviceName.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-  // const serviceImages = {
-  //   "House Chores": {
-  //     FurnitureAssembly: "../../assets/images/moving.jpg",
-  //     Laundry: "/path/to/laundry_image.jpg",
-  //     Gardening: "/path/to/gardening_image.jpg",
-  //   },
-  //   "Professional Help": {
-  //     Tutoring: "/path/to/tutoring_image.jpg",
-  //     Handyman: "/path/to/handyman_image.jpg",
-  //     "IT Support": "/path/to/it_support_image.jpg",
-  //   },
-  //   "Writing and Translation": {
-  //     Editing: "/path/to/editing_image.jpg",
-  //     Proofreading: "/path/to/proofreading_image.jpg",
-  //     Translation: "/path/to/translation_image.jpg",
-  //   },
-  // };
-
   async function getAllService() {
-    const response = await apiService.getAllService();
-    console.log(response.data);
-    setServices(response.data);
+    try {
+      // Make API call to fetch services
+      const response = await apiService.getAllService();
+
+      // Map the response data to include the static imageUrl
+      const servicesWithImageUrl = response.data.map((service) => {
+        return {
+          ...service,
+          imageUrl: imageUrl, // Use the imported imageUrl for all services
+        };
+      });
+
+      // Update the state with the services including imageUrl
+      setServices(servicesWithImageUrl);
+    } catch (error) {
+      console.error("Error fetching services:", error);
+    }
   }
 
   function convertToBase64(file) {
@@ -140,7 +136,7 @@ export default function Homepage() {
                   <SwiperSlide key={i}>
                     <Cardcategory
                       title={obj.serviceName}
-                      imageUrl={serviceImages[obj.category][obj.serviceName]}
+                      imageUrl={obj.imageUrl}
                       body={obj.serviceDesc}
                       onClick={() => navigateTo("/createtask")}
                     />

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Chart from "../../components/chart";
-import { UserData } from "../../data/chartdata";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import apiService from "../../services/apiService";
@@ -15,38 +14,88 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 export default function Admin() {
-  const [taskLists, setTaskLists] = useState([]);
+  const [totalTasksCount, setTotalTasksCount] = useState(0);
+  const [totalTransactionsCount, setTotalTransactionsCount] = useState(0);
+  const [totalUsersCount, setTotalUsersCount] = useState(0);
+  const [totalHelpersCount, setTotalHelpersCount] = useState(0);
+
   const [totalTasks, setTotalTasks] = useState(0);
+
   const [userData, setUserData] = useState({
-    labels: UserData.map((data) => data.year),
+    labels: ["User", "Helper", "Transaction", "Task"],
     datasets: [
       {
-        label: "User Gained",
-        data: UserData.map((data) => data.userGain),
+        label: "Total active of User and Helper",
+        data: [0, 0, 0, 0], // Initial data with 0 values
       },
     ],
   });
 
-  async function getAllTask() {
+  async function getUserCount() {
     try {
-      const response = await apiService.getAllTask();
+      const response = await apiService.getUserCount();
+      setTotalUsersCount(response.data);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
+  }
 
-      console.log(response.data);
-      setTaskLists(response.data);
+  async function getHelperCount() {
+    try {
+      const response = await apiService.getHelperCount();
+      setTotalHelpersCount(response.data);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
+  }
 
-      // Calculate total number of tasks
-      const totalTasksCount = taskLists.length;
-
-      // Update the state with the total number of tasks
-      setTotalTasks(totalTasksCount);
+  async function getTaskCount() {
+    try {
+      const response = await apiService.getTaskCount();
+      setTotalTasksCount(response.data);
     } catch (error) {
       console.error("Error fetching tasks:", error);
     }
   }
 
+  async function getTransactionCount() {
+    try {
+      const response = await apiService.getTransactionCount();
+      setTotalTransactionsCount(response.data);
+    } catch (error) {
+      console.error("Error fetching transactions:", error);
+    }
+  }
+
   useEffect(() => {
-    getAllTask();
+    getUserCount();
+    getHelperCount();
+    getTaskCount();
+    getTransactionCount();
   }, []);
+
+  useEffect(() => {
+    // Update the chart data when totalUsersCount and totalHelpersCount are fetched
+    setUserData((prevUserData) => ({
+      ...prevUserData,
+      datasets: [
+        {
+          label: "Total active of User and Helper",
+          data: [
+            totalUsersCount,
+            totalHelpersCount,
+            totalTransactionsCount,
+            totalTasksCount,
+          ],
+        },
+      ],
+    }));
+  }, [
+    totalUsersCount,
+    totalHelpersCount,
+    totalTransactionsCount,
+    totalTasksCount,
+  ]);
 
   return (
     <>
@@ -70,7 +119,9 @@ export default function Admin() {
                   className="text-[#999CD3]"
                 />
               </div>
-              <div className="text-[#978CB6] text-2xl font-bold">100</div>
+              <div className="text-[#978CB6] text-2xl font-bold">
+                {totalUsersCount}
+              </div>
               <div className="text-[#978CB6]">Total User</div>
             </div>
           </div>
@@ -85,7 +136,9 @@ export default function Admin() {
                   className="text-[#48BDE2]"
                 />
               </div>
-              <div className="text-[#48BDE2] text-2xl font-bold">53</div>
+              <div className="text-[#48BDE2] text-2xl font-bold">
+                {totalHelpersCount}
+              </div>
               <div className="text-[#48BDE2]">Total Helpers</div>
             </div>
           </div>
@@ -100,7 +153,9 @@ export default function Admin() {
                   className="text-[#D6C212]"
                 />
               </div>
-              <div className="text-[#D6C212] text-2xl font-bold">71</div>
+              <div className="text-[#D6C212] text-2xl font-bold">
+                {totalTransactionsCount}
+              </div>
               <div className="text-[#D6C212]">Total Transaction</div>
             </div>
           </div>
@@ -116,7 +171,7 @@ export default function Admin() {
                 />
               </div>
               <div className="text-[#CA958E] text-2xl font-bold ">
-                {totalTasks}
+                {totalTasksCount}
               </div>
               <div className="text-[#CA958E]">Total Task Request</div>
             </div>

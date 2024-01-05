@@ -38,8 +38,12 @@ export default function Signup() {
           role: isPersonal ? "user" : "helper",
         });
         if (response.status === 200) {
-          // If signup is successful, redirect to another page
-          navigateTo("/resume");
+          if (!isPersonal) {
+            // If signup is successful, redirect to another page
+            navigateTo("/resume");
+          } else {
+            navigateTo("/profile");
+          }
         } else {
           // Handle unsuccessful signup (e.g., display error message)
           console.log("Sign up failed:", response.error);

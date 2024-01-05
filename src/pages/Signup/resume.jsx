@@ -24,29 +24,23 @@ export default function Resume() {
     fd.append("file", file);
 
     setMsg("Uploading...");
-    setProgress((prevState) => {
-      return { ...prevState, started: true };
-    });
-
-    axios
-      .post("http://server3.bryanc12.net:25789/api/resume", fd, {
-        onUploadProgress: (progressEvent) => {
-          setProgress((prevState) => {
-            return {
-              ...prevState,
-              pc: progressEvent.progress * 100,
-            };
-          });
-        },
-        headers: {
-          "Custom-Header": "value",
-        },
-      })
+    // axios.post("https://kwikhelp.bryanc12.net/api/resume", fd);
+    fetch("https://kwikhelp.bryanc12.net/api/resume", {
+      method: "POST",
+      body: fd,
+      headers: {
+        "Custom-Header": "value",
+      },
+    })
       .then((res) => {
+        if (!res.ok) {
+          throw new Error("Network response was not ok");
+        }
         setMsg("Upload successful");
-        console.log(res.data);
-        setUploadSuccess(true);
+        return res.json();
+        // setUploadSuccess(true);
       })
+      .then((data) => console.log(data))
       .catch((err) => {
         setMsg("Upload failed");
         console.log(err);

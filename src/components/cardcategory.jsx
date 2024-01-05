@@ -10,7 +10,7 @@ export default function cardcategory({ title, imageUrl, body, onClick }) {
       onClick={onClick}
     >
       <div className="">
-        <img src={imageUrl} className="overflow-hidden w-100" alt="" />
+        <img src={imageUrl} className="overflow-hidden w-full" alt="" />
       </div>
 
       <div className="mt-0.5 m-4 sm:mt-1 md:mt-2 lg:mt-3 flex flex-col items-center leading-6">

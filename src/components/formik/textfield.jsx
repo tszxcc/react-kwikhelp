@@ -18,7 +18,7 @@ export default function Textfield({
   const [isFocused, setIsFocused] = useState(false);
 
   const hasError = touched?.name && errors?.name;
-  const inputClasses = `focus:outline-none w-full md:w-[70%] border rounded-lg duration-300 ${
+  const inputClasses = `focus:outline-none w-full md:w-[100%] border rounded-lg duration-300 ${
     hasError
       ? "border-red-500"
       : isFocused
