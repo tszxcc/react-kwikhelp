@@ -96,6 +96,7 @@ export default function InProgresscontent() {
                 {task.taskStatus === "Confirmed" && (
                   <Button
                     buttonText={"Pay"}
+                    buttonType={"pay"}
                     onClick={() => handlePayment(task)}
                   />
                 )}

@@ -31,11 +31,11 @@ export default function Taskrequestcontent() {
 
   return (
     <>
-      {tasks.map((task) => {
+      {tasks.map((task, i) => {
         if (task.taskStatus === "Open") {
           return (
             <div
-              id={task._id}
+              id={i}
               className="flex flex-col md:flex-row items-center border-2 border-[#7EA6F4] rounded-lg justify-around md:p-2 p-4 mb-4"
               style={{ boxShadow: "0 2px 7px #D4D4D4" }}
             >

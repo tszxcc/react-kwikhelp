@@ -29,7 +29,7 @@ export default function Login() {
         const response = await apiService.loginService(values);
         if (response.status === 200) {
           // If login is successful, redirect to the dashboard or another page
-          navigateTo("/");
+          window.location.replace("/");
         } else {
           // Handle unsuccessful login (e.g., display error message)
           console.log("Login failed:", response.error);
