@@ -17,18 +17,18 @@ import apiService from "../../services/apiService";
 export default function Taskrequestcontent() {
   const [tasks, setTasks] = useState([]);
 
-  async function getUserTask() {
-    const response = await apiService.getUserTask();
+  async function getAllTask() {
+    const response = await apiService.getAllTask();
     setTasks(response.data);
   }
 
   async function requestTask(taskId, username) {
     await apiService.requestTask(taskId, username);
-    getUserTask();
+    getAllTask();
   }
 
   useEffect(() => {
-    getUserTask();
+    getAllTask();
   }, []);
 
   return (

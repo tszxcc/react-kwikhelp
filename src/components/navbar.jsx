@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import logoImage from "../assets/images/logo.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
@@ -7,6 +7,7 @@ import apiService from "../services/apiService";
 
 export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+  const [userRole, setUserRole] = useState("");
 
   const navOnClick = (nav) => {
     if (nav === "home") {
@@ -38,6 +39,10 @@ export function Navbar() {
     }
   };
 
+  useEffect(() => {
+    setUserRole(localStorage.getItem("role"));
+  }, []);
+
   return (
     <div className="bg-[#F5F5F5] px-10 py-2 flex justify-between">
       <div
@@ -57,7 +62,7 @@ export function Navbar() {
         >
           Home
         </div>
-        {localStorage.getItem("role") === "user" && (
+        {userRole === "user" && (
           <div
             className="hover:cursor-pointer duration-150 hover:mb-2 hover:border-b-[1.5px] border-[#7EA6F4]"
             onClick={() => {
@@ -67,7 +72,7 @@ export function Navbar() {
             Task History
           </div>
         )}
-        {localStorage.getItem("role") === "helper" && (
+        {userRole === "helper" && (
           <div
             className="hover:cursor-pointer duration-150 hover:mb-2 hover:border-b-[1.5px] border-[#7EA6F4]"
             onClick={() => {
@@ -77,7 +82,7 @@ export function Navbar() {
             Task History
           </div>
         )}
-        {localStorage.getItem("role") ? (
+        {userRole ? (
           <>
             <div
               className="hover:cursor-pointer duration-150 hover:mb-2 hover:border-b-[1.5px] border-[#7EA6F4]"
