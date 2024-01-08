@@ -8,11 +8,26 @@ import { useNavigate } from "react-router-dom";
 import Calendar from "react-calendar";
 import apiService from "../../services/apiService";
 import homeBubble from "../../assets/images/homepage-bg-bubble.svg";
+import * as Yup from "yup";
+import Swal from "sweetalert2";
 
 export default function CreateTask() {
   const title = ["Professional Help", "Task Schedule", "Task Review"];
   const [step, setStep] = useState(1);
   const navigateTo = useNavigate();
+
+  const taskSchema = Yup.object().shape({
+    serviceType: Yup.string().required(),
+    taskDescription: Yup.string().required(),
+    taskArea: Yup.string().required(),
+    thingsToBring: Yup.string().required(),
+    username: Yup.string().required(),
+    additionalInfo: Yup.string(),
+    taskDate: Yup.string().required(),
+    startTime: Yup.string().required(),
+    endTime: Yup.string().required(),
+    budget: Yup.string().required(),
+  });
 
   // Only re-rendered if serviceOptions changes
   const [serviceOptions, setServiceOptions] = useState([
@@ -27,10 +42,14 @@ export default function CreateTask() {
     };
     try {
       const response = await apiService.submitTask(data);
-
       // when error
       if (!response) {
         //if error stop here
+        Swal.fire({
+          type: "error",
+          title: "Oops...",
+          text: "Please complete mandatory fields!",
+        });
         return;
       }
 
@@ -54,8 +73,19 @@ export default function CreateTask() {
       endTime: "",
       budget: "",
     },
+
+    validationSchema: taskSchema,
+    validateOnChange: true,
+    validateOnBlur: true,
+
     onSubmit: async (values) => {
       await submitTask(values);
+      Swal.fire({
+        title: "Your task submitted successfully!",
+        text: "You can view your requested task in Task History",
+        icon: "success",
+        confirmButtonText: "OK",
+      });
     },
   });
 
@@ -88,7 +118,7 @@ export default function CreateTask() {
                   value={values.serviceType}
                   onChange={handleChange}
                   touched={touched}
-                  error={errors}
+                  errors={errors}
                 />
 
                 <Textfield
@@ -98,7 +128,7 @@ export default function CreateTask() {
                   value={values.taskDescription}
                   onChange={handleChange}
                   touched={touched}
-                  error={errors}
+                  errors={errors}
                 />
                 <Textfield
                   id="taskArea"
@@ -107,7 +137,7 @@ export default function CreateTask() {
                   value={values.taskArea}
                   onChange={handleChange}
                   touched={touched}
-                  error={errors}
+                  errors={errors}
                 />
                 <Textfield
                   id="thingsToBring"
@@ -116,7 +146,7 @@ export default function CreateTask() {
                   value={values.thingsToBring}
                   onChange={handleChange}
                   touched={touched}
-                  error={errors}
+                  errors={errors}
                 />
               </div>
 
@@ -128,7 +158,7 @@ export default function CreateTask() {
                   value={values.username}
                   onChange={handleChange}
                   touched={touched}
-                  error={errors}
+                  errors={errors}
                 />
                 <Textfield
                   id="additionalInfo"
@@ -137,7 +167,7 @@ export default function CreateTask() {
                   value={values.additionalInfo}
                   onChange={handleChange}
                   touched={touched}
-                  error={errors}
+                  errors={errors}
                 />
               </div>
             </div>
@@ -152,7 +182,7 @@ export default function CreateTask() {
                   value={values.taskDate}
                   onChange={handleChange}
                   touched={touched}
-                  error={errors}
+                  errors={errors}
                 />
 
                 {/* <Calendar /> */}
@@ -163,7 +193,7 @@ export default function CreateTask() {
                   value={values.budget}
                   onChange={handleChange}
                   touched={touched}
-                  error={errors}
+                  errors={errors}
                 />
               </div>
 
@@ -175,7 +205,7 @@ export default function CreateTask() {
                   value={values.startTime}
                   onChange={handleChange}
                   touched={touched}
-                  error={errors}
+                  errors={errors}
                 />
                 <Textfield
                   id="endTime"
@@ -184,7 +214,7 @@ export default function CreateTask() {
                   value={values.endTime}
                   onChange={handleChange}
                   touched={touched}
-                  error={errors}
+                  errors={errors}
                 />
               </div>
             </div>

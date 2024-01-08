@@ -7,6 +7,8 @@ import homeBubble from "../../assets/images/homepage-bg-bubble.svg";
 import wordlogo from "../../assets/images/logo-text.png";
 
 import apiService from "../../services/apiService";
+import * as Yup from "yup";
+import Swal from "sweetalert2";
 
 import {
   faAt,
@@ -22,6 +24,16 @@ export default function Signup() {
   const navigateTo = useNavigate();
   const [isPersonal, setIsPersonal] = useState(true);
 
+  const registerSchema = Yup.object().shape({
+    username: Yup.string().required(),
+    email: Yup.string().required(),
+    phoneNumber: Yup.string().required(),
+    password: Yup.string().required(),
+    confirmPassword: Yup.string()
+      .required()
+      .oneOf([Yup.ref("password"), null], "Passwords must match"),
+  });
+
   const { handleSubmit, handleChange, values, touched, errors } = useFormik({
     initialValues: {
       username: "",
@@ -30,6 +42,8 @@ export default function Signup() {
       password: "",
       confirmPassword: "",
     },
+
+    validationSchema: registerSchema,
 
     onSubmit: async (values) => {
       try {
@@ -42,12 +56,21 @@ export default function Signup() {
             // If signup is successful, redirect to another page
             navigateTo("/resume");
           } else {
+            Swal.fire({
+              type: "success",
+              title: "Registered successfully",
+              text: "Let's complete your profile!",
+            });
             navigateTo("/profile");
           }
-        } else {
-          // Handle unsuccessful signup (e.g., display error message)
-          console.log("Sign up failed:", response.error);
+          return;
         }
+
+        Swal.fire({
+          type: "error",
+          title: "Oops...",
+          text: "Please complete mandatory fields!",
+        });
       } catch (error) {
         // Handle API request error
         console.error("API request failed:", error);
@@ -96,8 +119,9 @@ export default function Signup() {
                       Helper
                     </div>
                   </div>
-                  <h1 className="text-3xl text-center my-4">
-                    Sign Up As Personal
+
+                  <h1 className="text-3xl text-center my-4 duration-300">
+                    {isPersonal ? "Sign Up As Personal" : "Sign Up As Helper"}
                   </h1>
                 </div>
                 <div className="mt-2 w-full flex justify-center">

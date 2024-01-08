@@ -1,5 +1,6 @@
 import axios from 'axios';
 import config from "../config";
+import { useNavigate } from 'react-router-dom';
 
 axios.defaults.withCredentials = true
 
@@ -7,13 +8,6 @@ async function getProfile() {
     const url = config.apiEndpoint + `/profile`;
     
     const response = await axios.get(url);
-    return response;
-}
-
-async function saveProfile(data) {
-    const url = config.apiEndpoint + `/profile`;
-
-    const response = await axios.post(url);
     return response;
 }
 

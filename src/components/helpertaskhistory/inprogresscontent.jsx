@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import apiService from "../../services/apiService";
-
+import Swal from "sweetalert2";
 import Button from "../button";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

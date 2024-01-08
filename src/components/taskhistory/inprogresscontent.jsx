@@ -86,7 +86,10 @@ export default function InProgresscontent() {
                   <div className="text-sm md:text-base">{task.serviceType}</div>
                 </div>
               </div>
-              <div className="flex items-center justify-center md:mx-1 my-1 pt-4">
+              <div className="flex items-center justify-center md:mx-1 my-1 pt-4 text-[#7EA6F4]">
+                {task.taskStatus === "Accepted" && (
+                  <div className="mb-4">Pending Task...</div>
+                )}
                 {task.taskStatus === "Completed" && (
                   <Button
                     buttonText={"Confirm"}

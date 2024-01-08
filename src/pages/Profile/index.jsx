@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import Cardbackground from "../../components/cardbackground";
 import Textfield from "../../components/formik/textfield";
 import Button from "../../components/button";
-import { userSchema } from "../../validation/validationProfile";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -20,11 +19,21 @@ import sampleImage from "../../assets/images/sampleImage.jpg";
 import homeBubble from "../../assets/images/homepage-bg-bubble.svg";
 
 import apiService from "../../services/apiService";
+import Swal from "sweetalert2";
+import * as Yup from "yup";
+import { layer } from "@fortawesome/fontawesome-svg-core";
 
 export default function Profile() {
   const fileInputRef = useRef(null);
   const [profilePicture, setProfilePicture] = useState(sampleImage);
   const navigateTo = useNavigate();
+
+  const userSchema = Yup.object().shape({
+    fullName: Yup.string().required(),
+    description: Yup.string().required(),
+    phone: Yup.string().required(),
+    email: Yup.string().required(),
+  });
 
   const handleFileUpload = () => {
     // Trigger the file input click event when the camera icon is clicked
@@ -60,7 +69,13 @@ export default function Profile() {
 
   async function submitProfile(values) {
     const response = await apiService.updateProfile(values);
-    alert("Profile updated successfully");
+    Swal.fire({
+      icon: "success",
+      title: "Your profile has been saved",
+      text: "You can now proceed to Homepage",
+      showConfirmButton: false,
+      timer: 1500,
+    });
   }
 
   return (
@@ -78,8 +93,9 @@ export default function Profile() {
               email: initialProfile?.email,
             }}
             validationSchema={userSchema}
-            onSubmit={(values) => submitProfile(values)}
-            handle
+            onSubmit={(values) => {
+              submitProfile(values);
+            }}
           >
             {({ values, touched, errors, handleChange, handleSubmit }) => (
               <form className="flex justify-center" onSubmit={handleSubmit}>

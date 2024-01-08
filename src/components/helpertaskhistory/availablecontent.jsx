@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 
+import Swal from "sweetalert2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCalendarDays,
@@ -24,6 +25,12 @@ export default function Taskrequestcontent() {
 
   async function requestTask(taskId, username) {
     await apiService.requestTask(taskId, username);
+    Swal.fire({
+      title: "Request Successfully!",
+      text: "Now, you have to wait for user to approve your request",
+      icon: "success",
+      confirmButtonText: "OK",
+    });
     getAllTask();
   }
 

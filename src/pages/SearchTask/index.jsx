@@ -8,6 +8,7 @@ import Select from "../../components/select";
 import Modalbox from "../../components/modalbox";
 import apiService from "../../services/apiService";
 import homeBubble from "../../assets/images/homepage-bg-bubble.svg";
+import Swal from "sweetalert2";
 
 export default function Searchtask() {
   const [selectedJob, setSelectedJob] = useState(0);
@@ -64,6 +65,7 @@ export default function Searchtask() {
   const filteredData = jobLists.filter((item) =>
     item.serviceType.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
   useEffect(() => {
     getAllTask();
   }, []);
@@ -72,21 +74,12 @@ export default function Searchtask() {
     <>
       <div
         style={{ "--landingBubble": `url(${homeBubble})` }}
-        className="bg-[image:var(--landingBubble)] bg-cover bg-center h-screen"
+        className="bg-[image:var(--landingBubble)] bg-cover bg-center"
       >
         <div className="flex flex-col md:flex-row p-8 justify-center">
           <div className="mb-4 md:mb-0 w-full md:w-1/2">
             <Searchbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
           </div>
-
-          {/* <div className="flex space-x-4">
-          <div>
-            <Select />
-          </div>
-          <div>
-            <Select />
-          </div>
-        </div> */}
         </div>
 
         <div className="flex flex-col md:flex-row md:justify-evenly p-4">
@@ -106,11 +99,11 @@ export default function Searchtask() {
             ))}
           </div>
 
-          <div className="w-full md:w-1/4 bg-white">
+          <div className="w-full md:w-1/4">
             {selectedJob !== null &&
               jobLists.length > 0 &&
               selectedJob < jobLists.length && (
-                <div className="flex justify-center border-4 border-[#CFF2F6] rounded-lg px-16 py-10">
+                <div className="flex justify-center border-4 border-[#CFF2F6] rounded-lg px-16 py-10 bg-white">
                   <div>
                     <div>
                       <div className="font-bold mb-4">Job Details</div>
@@ -146,20 +139,13 @@ export default function Searchtask() {
                       </div>
 
                       <div>
-                        {applyOpen && (
-                          <div>
-                            <Modalbox
-                              isOpen={applyOpen}
-                              setIsOpen={setApplyOpen}
-                            >
-                              <div className="text-center w-96">
-                                <div className="mb-10 mt-4">
-                                  Applied Successfully!
-                                </div>
-                              </div>
-                            </Modalbox>
-                          </div>
-                        )}
+                        {applyOpen &&
+                          Swal.fire({
+                            title: "Applied Successfully!",
+                            text: "Proceed",
+                            icon: "success",
+                            confirmButtonText: "OK",
+                          })}
                       </div>
                       <div>
                         <Button buttonText="Apply" onClick={handleApply} />

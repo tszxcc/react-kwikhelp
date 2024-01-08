@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import apiService from "../../services/apiService";
-
+import Swal from "sweetalert2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCalendarDays,
@@ -33,6 +33,12 @@ export default function Pendingcontent() {
 
     getUserRequest();
     setAcceptOpen(null);
+    Swal.fire({
+      title: "You Have Accepted The Task Successfully!",
+      text: "Now, wait for the helper to start your task.",
+      icon: "success",
+      confirmButtonText: "OK",
+    });
   };
 
   const [tasks, setTasks] = useState([]);
