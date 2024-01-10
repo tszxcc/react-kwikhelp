@@ -208,10 +208,26 @@ export function Navbar() {
                 <div
                   className="hover:cursor-pointer duration-150 hover:border-b-[1.5px] border-[#7EA6F4] text-[#7EA6F4] mb-2"
                   onClick={() => {
+                    navOnClick("login");
+                  }}
+                >
+                  Login
+                </div>
+                <div
+                  className="hover:cursor-pointer duration-150 hover:border-b-[1.5px] border-[#7EA6F4] text-[#7EA6F4] mb-2"
+                  onClick={() => {
                     navOnClick("signUp");
                   }}
                 >
                   Sign Up
+                </div>
+                <div
+                  className="hover:cursor-pointer duration-150 hover:border-b-[1.5px] border-[#7EA6F4] text-[#7EA6F4] mb-2"
+                  onClick={() => {
+                    navOnClick("logout");
+                  }}
+                >
+                  Logout
                 </div>
               </div>
             )}
