@@ -65,7 +65,13 @@ export default function PendingContent() {
                 <div className="flex items-center">
                   <FontAwesomeIcon icon={faCalendarDays} className="mr-2" />
                   <div className="text-sm md:text-base">
-                    {taskDetail[task.taskID]?.taskDate || "Loading..."}
+                    {new Date(
+                      taskDetail[task.taskID]?.taskDate
+                    ).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "2-digit",
+                      day: "2-digit",
+                    }) || "Loading..."}
                   </div>
                 </div>
 

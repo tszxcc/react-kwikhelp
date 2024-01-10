@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Calendar from "react-calendar";
 
+import modalbox from "../modalbox";
+
 export default function Textfield({
   label,
   name,
@@ -13,11 +15,12 @@ export default function Textfield({
   value,
   touched,
   errors,
+  type,
 }) {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
 
-  const hasError = touched[name] && errors[name];
+  const hasError = touched?.name && errors?.name;
   const inputClasses = `focus:outline-none w-full md:w-[100%] border rounded-lg duration-300 ${
     hasError
       ? "border-red-500"
@@ -27,29 +30,35 @@ export default function Textfield({
   }`;
 
   return (
-    <div className="mb-4 flex flex-col">
-      <label htmlFor={name} className="text-gray-700 text-lg mb-2">
-        {label}
-      </label>
-      <div className={`flex items-center px-3 p-2 ${inputClasses}`}>
-        {icon && (
-          <FontAwesomeIcon icon={icon} className="text-[#7EA6F4] pr-3" />
-        )}
-        <input
-          as={as}
-          type="text"
-          id={name}
-          name={name}
-          placeholder={placeholder}
-          onChange={onChange}
-          className="flex-1 focus:outline-none"
-          readOnly={readOnly}
-          onClick={() => (readOnly ? setIsCalendarOpen(true) : null)}
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
-          value={value}
-        />
-        {isCalendarOpen && readOnly && (
+    <>
+      <div className="mb-4 flex flex-col">
+        <label htmlFor={name} className="text-gray-700 text-lg mb-2">
+          {label}
+        </label>
+        <div className={`flex items-center px-3 p-2 ${inputClasses}`}>
+          {icon && (
+            <FontAwesomeIcon icon={icon} className="text-[#7EA6F4] pr-3" />
+          )}
+          <input
+            as={as}
+            type={type || "text"} // if type is not passed, default to text
+            id={name}
+            name={name}
+            placeholder={placeholder}
+            onChange={onChange}
+            className="flex-1 focus:outline-none"
+            readOnly={readOnly}
+            onClick={() => (readOnly ? setIsCalendarOpen(true) : null)}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
+            value={value}
+          />
+        </div>
+      </div>
+
+      {hasError && <div className="text-red-600">{errors[name]}</div>}
+      {isCalendarOpen && readOnly && (
+        <modalbox>
           <Calendar
             onChange={(date) => {
               if (date) {
@@ -58,10 +67,8 @@ export default function Textfield({
               setIsCalendarOpen(false);
             }}
           />
-        )}
-      </div>
-
-      {hasError && <div className="text-red-600">{errors[name]}</div>}
-    </div>
+        </modalbox>
+      )}
+    </>
   );
 }

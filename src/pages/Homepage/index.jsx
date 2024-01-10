@@ -2,9 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import Searchbar from "../../components/searchbar";
 import Cardcategory from "../../components/cardcategory";
-import Modalbox from "../../components/modalbox";
 import SwiperNavButton from "../../components/swipernavbutton";
-import Button from "../../components/button";
 
 import { Swiper, SwiperSlide, SwiperWrapper } from "swiper/react";
 import { A11y, Navigation, Pagination } from "swiper/modules";
@@ -41,33 +39,10 @@ export default function Homepage() {
     try {
       // Make API call to fetch services
       const response = await apiService.getAllService();
-
-      // Map the response data to include the static imageUrl
-      const servicesWithImageUrl = response.data.map((service) => {
-        return {
-          ...service,
-          imageUrl: imageUrl, // Use the imported imageUrl for all services
-        };
-      });
-
-      // Update the state with the services including imageUrl
-      setServices(servicesWithImageUrl);
+      setServices(response.data);
     } catch (error) {
       console.error("Error fetching services:", error);
     }
-  }
-
-  function convertToBase64(file) {
-    return new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
-      fileReader.onloadd = () => {
-        resolve(fileReader.result);
-      };
-      fileReader.oneerror = (error) => {
-        reject(error);
-      };
-    });
   }
 
   useEffect(() => {
@@ -136,9 +111,11 @@ export default function Homepage() {
                   <SwiperSlide key={i}>
                     <Cardcategory
                       title={obj.serviceName}
-                      imageUrl={obj.imageUrl}
+                      imageUrl={obj.serviceImg}
                       body={obj.serviceDesc}
-                      onClick={() => navigateTo("/createtask")}
+                      onClick={() =>
+                        navigateTo(`/createtask/${obj.serviceUrl}`)
+                      }
                     />
                   </SwiperSlide>
                 )
@@ -172,9 +149,11 @@ export default function Homepage() {
                   <SwiperSlide key={i}>
                     <Cardcategory
                       title={obj.serviceName}
-                      imageUrl={obj.imageUrl}
+                      imageUrl={obj.serviceImg}
                       body={obj.serviceDesc}
-                      onClick={() => navigateTo("/createtask")}
+                      onClick={() =>
+                        navigateTo(`/createtask/${obj.serviceUrl}`)
+                      }
                     />
                   </SwiperSlide>
                 )
@@ -208,9 +187,11 @@ export default function Homepage() {
                   <SwiperSlide key={i}>
                     <Cardcategory
                       title={obj.serviceName}
-                      imageUrl={obj.imageUrl}
+                      imageUrl={obj.serviceImg}
                       body={obj.serviceDesc}
-                      onClick={() => navigateTo("/createtask")}
+                      onClick={() =>
+                        navigateTo(`/createtask/${obj.serviceUrl}`)
+                      }
                     />
                   </SwiperSlide>
                 )

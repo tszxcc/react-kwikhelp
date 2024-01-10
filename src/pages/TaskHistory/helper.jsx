@@ -11,7 +11,7 @@ import CompletedContent from "../../components/helpertaskhistory/completedconten
 import homeBubble from "../../assets/images/homepage-bg-bubble.svg";
 
 export default function HelperTaskhistory() {
-  const [activeItem, setActiveItem] = useState("Available Tasks");
+  const [activeItem, setActiveItem] = useState("Pending Accept");
 
   const handleMenuItemClick = (item) => {
     setActiveItem(item);

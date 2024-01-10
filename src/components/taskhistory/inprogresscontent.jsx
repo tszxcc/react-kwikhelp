@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import apiService from "../../services/apiService";
-
+import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCalendarDays,
@@ -17,6 +17,8 @@ import Button from "../button";
 export default function InProgresscontent() {
   const [tasks, setTasks] = useState([]);
   const [confirmModal, setConfirmModal] = useState(null);
+  const [paymentSuccess, setPaymentSuccess] = useState(false);
+  const navigateTo = useNavigate();
 
   async function getUserTask() {
     const response = await apiService.getUserTask();
@@ -33,9 +35,16 @@ export default function InProgresscontent() {
     const response = await apiService.payTask(task._id, task.budget);
     const billId = response.data;
     if (billId) {
-      window.location.replace(
+      const windowEvent = window.open(
         `https://www.billplz-sandbox.com/bills/${billId}`
       );
+
+      const timer = setInterval(() => {
+        if (windowEvent.closed) {
+          clearInterval(timer);
+          getUserTask();
+        }
+      }, 200);
     }
   }
 
@@ -61,7 +70,13 @@ export default function InProgresscontent() {
               <div className="grid grid-cols-2 grid-rows-2 gap-6 md:gap-x-12">
                 <div className="flex items-center">
                   <FontAwesomeIcon icon={faCalendarDays} className="mr-2" />
-                  <div className="text-sm md:text-base">{task.taskDate}</div>
+                  <div className="text-sm md:text-base">
+                    {new Date(task.taskDate).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "2-digit",
+                      day: "2-digit",
+                    })}
+                  </div>
                 </div>
 
                 <div className="flex items-center">

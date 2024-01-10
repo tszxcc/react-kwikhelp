@@ -12,6 +12,10 @@ export default function Button({
     var css;
 
     switch (buttonType) {
+      case "button":
+        css =
+          "text-[#7EA6F4] text-sm bg-[#FFFFFF] hover:bg-[#EFF2F7] duration-300 border-solid border-2 border-[#7EA6F4] rounded-lg p-3 font-bold w-full mb-4 flex justify-center items-center";
+        break;
       case "back":
         css =
           "text-[#7EA6F4] text-sm bg-[#FFFFFF] hover:bg-[#EFF2F7] duration-300 border-solid border-2 border-[#7EA6F4] rounded-lg p-3 font-bold w-full mb-4 flex justify-center items-center";

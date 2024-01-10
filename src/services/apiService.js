@@ -11,6 +11,18 @@ async function getProfile() {
     return response;
 }
 
+async function getProfileOther(username) {
+    const url = config.apiEndpoint + `/profile/${username}`;
+
+    try {
+        const response = await axios.get(url);
+        return response;
+    } catch (error) {
+        console.error(error.message, error.response?.data);
+        return false;
+    }
+}
+
 async function postResume() {
     const url = config.apiEndpoint + `/resume`;
     
@@ -67,7 +79,7 @@ async function loginService(values) {
 
     try {
         const response = await axios.post(url, values);
-        localStorage.setItem('role', response.data);
+        await localStorage.setItem('role', response.data);
         return response;
     } catch (error) {
         console.error(error.message, error.response?.data);
@@ -125,12 +137,23 @@ async function getUserRequest() {
 async function getOneTask(taskId) {
     const url = config.apiEndpoint + `/task/${taskId}`;
     
-    const response = await axios.get(url);
-    return response;
+    try {
+        const response = await axios.get(url);
+        return response;
+    } catch (error) {
+        return false;
+    }
 }
 
 async function acceptTask(taskId, helper) {
     const url = config.apiEndpoint + `/task/accept`;
+    
+    const response = await axios.post(url, { taskId, helper });
+    return response;
+}
+
+async function rejectTask(taskId, helper) {
+    const url = config.apiEndpoint + `/task/reject`;
     
     const response = await axios.post(url, { taskId, helper });
     return response;
@@ -167,8 +190,14 @@ async function requestTask(taskId, username) {
 async function getHelperRequest() {
     const url = config.apiEndpoint + `/task/helperRequests`;
     
-    const response = await axios.get(url);
-    return response;
+    try {
+        const response = await axios.get(url);
+        return response;
+    } catch (error) {
+        console.error(error.message, error.response?.data);
+        return false;
+    }
+
 }
 
 async function completeTask(taskId) {
@@ -198,8 +227,95 @@ async function logout() {
     return response;
 }
 
+async function requestRecover(username) {
+    const url = config.apiEndpoint + `/auth/recover`;
+    
+    const response = await axios.post(url, { username });
+    return response;
+}
+
+async function resetPassword(values) {
+    const url = config.apiEndpoint + `/auth/reset`;
+    
+    const response = await axios.post(url, values);
+    return response;
+}
+
+async function getProfilePic() {
+    const url = config.apiEndpoint + `/profile/image`;
+    
+    try {
+        const response = await axios.get(url);
+        return response;
+    } catch (error) {
+        console.error(error.message, error.response?.data);
+        return false;
+    }
+}
+
+async function getProfileResume() {
+    const url = config.apiEndpoint + `/profile/resume`;
+    
+    try {
+        const response = await axios.get(url);
+        return response;
+    } catch (error) {
+        console.error(error.message, error.response?.data);
+        return false;
+    }
+}
+
+async function getProfilePicOther(username) {
+    const url = config.apiEndpoint + `/profile/image/${username}`;
+    
+    try {
+        const response = await axios.get(url);
+        return response;
+    } catch (error) {
+        console.error(error.message, error.response?.data);
+        return false;
+    }
+}
+
+async function updateProfilePic(values) {
+    const url = config.apiEndpoint + `/profile/image`;
+    
+    try {
+        const response = await axios({ 
+            method: "post", 
+            url: url, 
+            headers: { "Content-Type": "multipart/form-data" }, 
+            data: values 
+        });
+
+        return response;
+    } catch (error) {
+        console.error(error.message, error.response?.data);
+        return false;
+    }
+}
+
+async function updateProfileResume(values) {
+    const url = config.apiEndpoint + `/profile/resume`;
+    
+    try {
+        const response = await axios({ 
+            method: "post", 
+            url: url, 
+            headers: { "Content-Type": "multipart/form-data" }, 
+            data: values 
+        });
+
+        return response;
+    } catch (error) {
+        console.error(error.message, error.response?.data);
+        return false;
+    }
+}
+
 export default {
     getProfile,
+    getProfileOther,
     postResume,
     getAllService,
     getAllTask,
@@ -215,6 +331,7 @@ export default {
     getUserRequest,
     getOneTask,
     acceptTask,
+    rejectTask,
     confirmTask,
     payTask,
     reviewTask,
@@ -222,5 +339,12 @@ export default {
     getHelperRequest,
     completeTask,
     updateProfile,
-    logout
+    logout,
+    requestRecover,
+    resetPassword,
+    getProfilePic,
+    getProfileResume,
+    getProfilePicOther,
+    updateProfilePic,
+    updateProfileResume
 };

@@ -37,7 +37,13 @@ export default function Deletedcontent() {
               <div className="grid grid-cols-2 grid-rows-2 gap-6 md:gap-x-12">
                 <div className="flex items-center">
                   <FontAwesomeIcon icon={faCalendarDays} className="mr-2" />
-                  <div className="text-sm md:text-base">{task.taskDate}</div>
+                  <div className="text-sm md:text-base">
+                    {new Date(task.taskDate).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "2-digit",
+                      day: "2-digit",
+                    })}
+                  </div>
                 </div>
 
                 <div className="flex items-center">

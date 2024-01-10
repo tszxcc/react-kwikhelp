@@ -1,4 +1,5 @@
 import React from "react";
+import { useSearchParams } from "react-router-dom";
 
 import apiService from "../../services/apiService";
 
@@ -9,7 +10,7 @@ import Button from "../../components/button";
 import homeBubble from "../../assets/images/homepage-bg-bubble.svg";
 import wordlogo from "../../assets/images/logo-text.png";
 import forgotpass from "../../assets/images/forgotpass.svg";
-import { faAt } from "@fortawesome/free-solid-svg-icons";
+import { faLock } from "@fortawesome/free-solid-svg-icons";
 import Swal from "sweetalert2";
 
 import { Formik, Form } from "formik";
@@ -17,18 +18,20 @@ import { useNavigate } from "react-router-dom";
 
 export default function ForgotPassword() {
   const navigateTo = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const resetToken = searchParams.get("token");
 
-  const handleForgotSubmit = async (values, { resetForm }) => {
+  const handleSubmitReset = async (values, { resetForm }) => {
     try {
-      const res = await apiService.requestRecover(values.username);
+      values = { ...values, token: resetToken };
+      const res = await apiService.resetPassword(values);
       if (res.status === 200) {
         await Swal.fire({
           title: "Success!",
-          text: "Please check your email for the reset link.",
+          text: "Password updated successfully.",
           icon: "success",
           confirmButtonText: "Ok",
         });
-
         navigateTo("/login");
         return;
       }
@@ -49,7 +52,7 @@ export default function ForgotPassword() {
     <>
       <div
         style={{ "--landingBubble": `url(${homeBubble})` }}
-        className="bg-[image:var(--landingBubble)] bg-cover bg-center h-content"
+        className="bg-[image:var(--landingBubble)] bg-cover bg-center h-conten"
       >
         <div className="w-full sm:w-[70%] md:w-[50%] lg:w-[40%] xl:w-[35%] mx-auto">
           <Cardbackground>
@@ -57,16 +60,16 @@ export default function ForgotPassword() {
               <div className="flex flex-col">
                 <img src={wordlogo} className="mb-5 self-center w-24"></img>
                 <img src={forgotpass} className="h-52"></img>
-                <h1 className="text-3xl text-center my-4">Forgot Password</h1>
+                <h1 className="text-3xl text-center my-4">Reset Password</h1>
                 <p className="mb-4">
-                  Enter the username associated with your account and we’ll send
-                  you a link to reset your password.
+                  Please enter new password and confirm password for your
+                  account.
                 </p>
               </div>
               <Formik
-                initialValues={{ username: "" }}
+                initialValues={{ password: "", confirmPassword: "" }}
                 onSubmit={async (values, { resetForm }) =>
-                  await handleForgotSubmit(values, { resetForm })
+                  await handleSubmitReset(values, { resetForm })
                 }
               >
                 {({ values, touched, errors, handleChange, handleSubmit }) => (
@@ -74,15 +77,28 @@ export default function ForgotPassword() {
                     <div className="mt-2 w-full flex justify-center">
                       <Form className="w-full">
                         <Textfield
-                          id="username"
-                          label="Username:"
-                          name="username"
-                          placeholder="Username"
+                          id="password"
+                          label="Password:"
+                          name="password"
+                          placeholder="Password"
                           onChange={handleChange}
                           errors={errors}
-                          icon={faAt}
-                          value={values.username}
+                          icon={faLock}
+                          value={values.password}
                           touched={touched}
+                          type="password"
+                        />
+                        <Textfield
+                          id="confirmPassword"
+                          label="Confirm Password:"
+                          name="confirmPassword"
+                          placeholder="Confirm Password"
+                          onChange={handleChange}
+                          errors={errors}
+                          icon={faLock}
+                          value={values.confirmPassword}
+                          touched={touched}
+                          type="password"
                         />
                       </Form>
                     </div>
@@ -96,15 +112,6 @@ export default function ForgotPassword() {
                   </>
                 )}
               </Formik>
-              <div className="flex mt-4">
-                <div className="mr-4">Don't have an account?</div>
-                <button
-                  className="text-[#7EA6F4] text-sm hover:text-[#A8C2F7]"
-                  onClick={() => navigateTo("/signup")}
-                >
-                  Sign Up
-                </button>
-              </div>
             </div>
           </Cardbackground>
         </div>

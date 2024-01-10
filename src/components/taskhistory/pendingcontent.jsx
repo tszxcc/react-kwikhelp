@@ -18,12 +18,9 @@ import Modalbox from "../modalbox";
 import Button from "../button";
 
 export default function Pendingcontent() {
-  const [modalOpen, setModalOpen] = useState(false);
+  const [resumeOpen, setResumeOpen] = useState(null);
   const [acceptOpen, setAcceptOpen] = useState(null);
-
-  const handleEyeClick = () => {
-    setModalOpen(true);
-  };
+  const [rejectOpen, setRejectOpen] = useState(null);
 
   const handleAcceptTask = async () => {
     const response = await apiService.acceptTask(
@@ -36,6 +33,22 @@ export default function Pendingcontent() {
     Swal.fire({
       title: "You Have Accepted The Task Successfully!",
       text: "Now, wait for the helper to start your task.",
+      icon: "success",
+      confirmButtonText: "OK",
+    });
+  };
+
+  const handleRejectTask = async () => {
+    const response = await apiService.rejectTask(
+      rejectOpen?.taskID,
+      rejectOpen?.helper
+    );
+
+    getUserRequest();
+    setRejectOpen(null);
+    Swal.fire({
+      title: "You Have Rejected The Task Successfully!",
+      text: "The task will be removed from your pending task list.",
       icon: "success",
       confirmButtonText: "OK",
     });
@@ -92,7 +105,14 @@ export default function Pendingcontent() {
             <div className="flex items-center">
               <FontAwesomeIcon icon={faCalendarDays} className="mr-2" />
               <div className="text-sm md:text-base">
-                {taskDetail[task.taskID]?.taskDate || "Loading..."}
+                {new Date(taskDetail[task.taskID]?.taskDate).toLocaleDateString(
+                  "en-US",
+                  {
+                    year: "numeric",
+                    month: "2-digit",
+                    day: "2-digit",
+                  }
+                ) || "Loading..."}
               </div>
             </div>
 
@@ -130,7 +150,7 @@ export default function Pendingcontent() {
             <FontAwesomeIcon
               icon={faEye}
               className="cursor-pointer"
-              onClick={handleEyeClick}
+              onClick={() => setResumeOpen(task)}
             />
             <FontAwesomeIcon
               icon={faCheck}
@@ -140,18 +160,20 @@ export default function Pendingcontent() {
             <FontAwesomeIcon
               icon={faXmark}
               className="text-[#D85751]  cursor-pointer"
+              onClick={() => setRejectOpen(task)}
             />
           </div>
         </div>
       ))}
 
       {/* Modal Box */}
-      {modalOpen && (
+      {resumeOpen && (
         <div>
           <ResumeModalbox
-            isOpen={modalOpen}
-            setIsOpen={setModalOpen}
-            // apa ni this ispending one ma, for  user to view all the applied helper's personal info and their own resume
+            isOpen={true}
+            setIsOpen={() => setResumeOpen(null)}
+            helper={resumeOpen?.helper}
+            // helper="bryan"
           ></ResumeModalbox>
         </div>
       )}
@@ -172,6 +194,28 @@ export default function Pendingcontent() {
                 buttonText="No"
                 buttonType="back"
                 onClick={() => setAcceptOpen(null)}
+              ></Button>
+            </div>
+          </Modalbox>
+        </div>
+      )}
+
+      {/* Reject Box */}
+      {rejectOpen && (
+        <div>
+          <Modalbox isOpen={true} setIsOpen={() => setRejectOpen(null)}>
+            <div className="text-center w-96">
+              <div className="mb-10 mt-4">
+                Are you sure you want to reject this Helper offer?
+              </div>
+              <Button
+                buttonText="Yes"
+                onClick={() => handleRejectTask()}
+              ></Button>
+              <Button
+                buttonText="No"
+                buttonType="back"
+                onClick={() => setRejectOpen(null)}
               ></Button>
             </div>
           </Modalbox>

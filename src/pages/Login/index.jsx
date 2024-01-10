@@ -98,6 +98,7 @@ export default function Login() {
                       touched={touched}
                       errors={errors}
                       icon={faLock}
+                      type="password"
                     />
                   </div>
                 </div>

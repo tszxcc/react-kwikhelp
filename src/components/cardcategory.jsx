@@ -10,7 +10,11 @@ export default function cardcategory({ title, imageUrl, body, onClick }) {
       onClick={onClick}
     >
       <div className="">
-        <img src={imageUrl} className="overflow-hidden w-full" alt="" />
+        <img
+          src={imageUrl}
+          className="overflow-hidden w-full h-64 object-cover"
+          alt=""
+        />
       </div>
 
       <div className="mt-0.5 m-4 sm:mt-1 md:mt-2 lg:mt-3 flex flex-col items-center leading-6">
@@ -19,7 +23,7 @@ export default function cardcategory({ title, imageUrl, body, onClick }) {
         </div>
 
         <div className="leading-7 break-normal">
-          <p className="m-0 p-0">{body}</p>
+          <p className="m-0 p-0 h-16">{body}</p>
         </div>
       </div>
     </div>

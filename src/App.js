@@ -15,6 +15,7 @@ import Taskhistory from "./pages/TaskHistory";
 import HelperTaskhistory from "./pages/TaskHistory/helper.jsx";
 import SearchTask from "./pages/SearchTask";
 import Resume from "./pages/Signup/resume.jsx";
+import Reset from "./pages/Reset";
 
 function App() {
 
@@ -38,11 +39,12 @@ function App() {
           <Route path="/admin" element={<Admin />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/createtask" element={<CreateTask />} />
+          <Route path="/createtask/:serviceType" element={<CreateTask />} />
           <Route path="/taskhistory" element={<Taskhistory />} />
           <Route path="/helpertaskhistory" element={<HelperTaskhistory />} />
           <Route path="/searchtask" element={<SearchTask />} />
           <Route path="/resume" element={<Resume />} />
-       
+          <Route path="/reset" element={<Reset />} />
         </Routes>
       </Router>
     </>

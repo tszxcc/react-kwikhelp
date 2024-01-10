@@ -1,50 +1,32 @@
 import React, { useState } from "react";
-import Textfield from "../../components/formik/textfield";
 import Cardbackground from "../../components/cardbackground";
 import Button from "../../components/button";
 
-import axios from "axios";
 import homeBubble from "../../assets/images/homepage-bg-bubble.svg";
 import resumelogo from "../../assets/images/resumelogo.svg";
 import { useNavigate } from "react-router-dom";
 
+import apiService from "../../services/apiService";
+
 export default function Resume() {
   const [file, setFile] = useState(null);
-  const [progress, setProgress] = useState({ started: false, pc: 0 });
-  const [msg, setMsg] = useState(null);
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const navigateTo = useNavigate();
 
-  function handleUpload() {
+  async function handleUpload() {
     if (!file) {
       console.log("No file selected");
       return;
     }
-    const fd = new FormData();
-    fd.append("file", file);
 
-    setMsg("Uploading...");
-    // axios.post("https://kwikhelp.bryanc12.net/api/resume", fd);
-    fetch("https://kwikhelp.bryanc12.net/api/resume", {
-      method: "POST",
-      body: fd,
-      headers: {
-        "Custom-Header": "value",
-      },
-    })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Network response was not ok");
-        }
-        setMsg("Upload successful");
-        return res.json();
-        // setUploadSuccess(true);
-      })
-      .then((data) => console.log(data))
-      .catch((err) => {
-        setMsg("Upload failed");
-        console.log(err);
-      });
+    const formData = new FormData();
+    formData.append("upload", file);
+
+    const response = await apiService.updateProfileResume(formData);
+    if (response.status === 200) {
+      setUploadSuccess(true);
+      return;
+    }
   }
 
   return (
@@ -75,16 +57,20 @@ export default function Resume() {
                   />
                 </div>
               </div>
-              <Button onClick={handleUpload} buttonText="Upload"></Button>
-              {progress.started && (
-                <progress max="100" value={progress.pc}></progress>
+              {!uploadSuccess && (
+                <Button onClick={handleUpload} buttonText="Upload" />
               )}
-              {msg && <div className="mb-4">{msg}</div>}
               {uploadSuccess && (
-                <Button
-                  buttonText="Continue"
-                  onClick={() => navigateTo("/profile")}
-                />
+                <>
+                  <div className="text-green-500 mb-4">
+                    Resume uploaded successfully, please continue!
+                  </div>
+                  <Button
+                    buttonType="pay"
+                    buttonText="Continue"
+                    onClick={() => navigateTo("/profile")}
+                  />
+                </>
               )}
             </div>
 

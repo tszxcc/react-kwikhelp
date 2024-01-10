@@ -76,7 +76,6 @@ export default function Completedcontent() {
 
   return (
     <>
-      {console.log(taskDetail)}
       {tasks.map((task, i) => {
         if (
           task.requestStatus === "Accepted" &&
@@ -95,7 +94,13 @@ export default function Completedcontent() {
                 <div className="flex items-center">
                   <FontAwesomeIcon icon={faCalendarDays} className="mr-2" />
                   <div className="text-sm md:text-base">
-                    {taskDetail[task.taskID]?.taskDate}
+                    {new Date(
+                      taskDetail[task.taskID]?.taskDate
+                    ).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "2-digit",
+                      day: "2-digit",
+                    })}
                   </div>
                 </div>
 
